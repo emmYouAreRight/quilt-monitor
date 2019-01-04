@@ -1,0 +1,6 @@
+{
+  "token": "weixin",
+  "appid": "wx1ddff222ecdf795f",
+  "secret": "c80e9a88fe22fdcf5de42840e5d5575c",
+  "grant_type": "client_credential"
+}
