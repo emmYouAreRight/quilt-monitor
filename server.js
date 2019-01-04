@@ -5,7 +5,7 @@ const path = require('path') // 文件路径模块
 const sha1 = require('node-sha1') // 加密模块
 const urlencode = require('urlencode') // URL编译模块
 
-const HOSTNAME = '127.0.0.1' // ip或域名
+const HOSTNAME = '0.0.0.0' // ip或域名
 const PORT = 5050 // 端口
 
 /**
