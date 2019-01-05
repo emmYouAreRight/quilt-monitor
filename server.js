@@ -82,7 +82,7 @@ app.post('/', function (req, res) {
     } = wxEventData
     let content = ''
     let text = JSON.stringify(QUILT_DATA)
-    text = req.rawBody
+    text = xml2json.toJson(req.rawBody)
     content = `<xml><ToUserName><![CDATA[${FromUserName}]]></ToUserName><FromUserName><![CDATA[${ToUserName}]]></FromUserName><CreateTime>${CreateTime}</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[${text}]]></Content></xml>`
     res.send(content)
   })
