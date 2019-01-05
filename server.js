@@ -4,7 +4,10 @@ const fs = require('fs') // 文件系统模块
 const path = require('path') // 文件路径模块
 const sha1 = require('node-sha1') // 加密模块
 const urlencode = require('urlencode') // URL编译模块
+const https = require('https')
+
 const mqttClient = require('./lib/mqtt')
+const cache = require('./lib/cache')
 
 const HOSTNAME = '0.0.0.0' // ip或域名
 const PORT = 5050 // 端口
@@ -16,6 +19,7 @@ const PORT = 5050 // 端口
 const CONFIG = require('./config.json')
 
 const app = express()
+
 /**
  * [开启跨域便于接口访问]
  */
@@ -62,6 +66,29 @@ app.get('/upload', function (req, res) {
   })
   res.send(content)
   mqttClient.pub(content)
+})
+
+app.get('/wx/getAccessToken', function (req, res) {
+  if (cache.isExpired('access_token')) {
+    // http 获取access token
+    https.get(
+      `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${
+        CONFIG.appid
+      }&secret=${CONFIG.secret}`,
+      response => {
+        let data = ''
+        response.setEncoding('utf8')
+        response.on('data', chunk => (data += chunk))
+        response.on('end', () => {
+          let obj = JSON.parse(data)
+          cache.set('access_token', obj['access_token'], obj['expires_in'])
+          res.send(obj['access_token'])
+        })
+      }
+    )
+  } else {
+    res.send(cache.get('access_token'))
+  }
 })
 
 app.listen(PORT, HOSTNAME, function () {
