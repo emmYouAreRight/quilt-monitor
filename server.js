@@ -81,12 +81,9 @@ app.post('/', function (req, res) {
       EventKey
     } = wxEventData
     let content = ''
-    // 点击自定义菜单 -> 获取信息
-    if (MsgType === 'event' && Event === 'click' && EventKey === 'get_info') {
-      let text = JSON.stringify(QUILT_DATA)
-      content = `<xml><ToUserName><![CDATA[${FromUserName}]]></ToUserName><FromUserName><![CDATA[${ToUserName}]]></FromUserName><CreateTime>${CreateTime}</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[${text}]]></Content></xml>`
-    }
-    res.send(req.rawBody)
+    let text = JSON.stringify(QUILT_DATA)
+    content = `<xml><ToUserName><![CDATA[${FromUserName}]]></ToUserName><FromUserName><![CDATA[${ToUserName}]]></FromUserName><CreateTime>${CreateTime}</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[${text}]]></Content></xml>`
+    res.send(content)
   })
 })
 
