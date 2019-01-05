@@ -4,6 +4,7 @@ const fs = require('fs') // 文件系统模块
 const path = require('path') // 文件路径模块
 const sha1 = require('node-sha1') // 加密模块
 const urlencode = require('urlencode') // URL编译模块
+const mqttClient = require('./lib/mqtt')
 
 const HOSTNAME = '0.0.0.0' // ip或域名
 const PORT = 5050 // 端口
@@ -49,6 +50,18 @@ app.get('/', function (req, res) {
   } else {
     res.send('验证失败')
   }
+})
+
+app.get('/upload', function (req, res) {
+  const queryObj = req.query
+  const content = JSON.stringify({
+    LIGHT: Number(queryObj.light),
+    TEMP: Number(queryObj.temp),
+    HUMI: Number(queryObj.humi),
+    DISTANCE: Number(queryObj.RangeInCentimeters)
+  })
+  res.send(content)
+  mqttClient.pub(content)
 })
 
 app.listen(PORT, HOSTNAME, function () {

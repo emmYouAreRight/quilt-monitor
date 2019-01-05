@@ -2,5 +2,16 @@
   "token": "weixin",
   "appid": "wx1ddff222ecdf795f",
   "secret": "c80e9a88fe22fdcf5de42840e5d5575c",
-  "grant_type": "client_credential"
+  "grant_type": "client_credential",
+
+  "SERVER_NAME": "mqtt://tinylink.cn",
+  "CLIENT_NAME": "4968eadcaf373d29e98fc428529fc9615bf69bf7",
+  "PORT": 1883,
+
+  "SUB_TOPIC": "4968eadcaf373d29e98fc428529fc9615bf69bf7/service",
+  "PUB_TOPIC": "4968eadcaf373d29e98fc428529fc9615bf69bf7/data",
+  "PUB_EVENT_TOPIC": "4968eadcaf373d29e98fc428529fc9615bf69bf7/data",
+
+  "USERNAME": "qhh666888",
+  "PASSWORD": "qhh666888"
 }
