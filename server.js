@@ -86,7 +86,7 @@ app.post('/', function (req, res) {
       let text = JSON.stringify(QUILT_DATA)
       content = `<xml><ToUserName><![CDATA[${FromUserName}]]></ToUserName><FromUserName><![CDATA[${ToUserName}]]></FromUserName><CreateTime>${CreateTime}</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[${text}]]></Content></xml>`
     }
-    res.send(content)
+    res.send(req.rawBody)
   })
 })
 
