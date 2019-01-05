@@ -81,8 +81,17 @@ app.post('/', function (req, res) {
       EventKey
     } = wxEventData
     let content = ''
-    let text = JSON.stringify(QUILT_DATA)
-    text = xml2json.toJson(req.rawBody)
+    let text = ''
+    // 菜单点击事件
+    if (MsgType === 'event') {
+      if (Event === 'CLICK') {
+        if (EventKey === 'get_info') {
+          text = JSON.stringify(QUILT_DATA)
+        }
+      }
+    } else {
+      text = xml2json.toJson(req.rawBody)
+    }
     content = `<xml><ToUserName><![CDATA[${FromUserName}]]></ToUserName><FromUserName><![CDATA[${ToUserName}]]></FromUserName><CreateTime>${CreateTime}</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[${text}]]></Content></xml>`
     res.send(content)
   })
