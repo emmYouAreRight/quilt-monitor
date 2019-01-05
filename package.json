@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
   "repository": {
     "type": "git",
     "url": "https://git.sinacloud.com/quilt"
@@ -17,6 +13,7 @@
     "express": "^4.16.4",
     "mqtt": "^2.18.8",
     "node-sha1": "^1.0.1",
+    "pm2": "^3.2.4",
     "request": "^2.88.0",
     "urlencode": "^1.1.0",
     "xml2json": "^0.11.2"
@@ -29,7 +26,8 @@
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0"
   },
-  "script": {
-    "start": "node server.js"
+  "scripts": {
+    "start": "pm2 start server.js --name \"quilt\"",
+    "stop": "pm2 stop quilt & pm2 delete quilt"
   }
 }
