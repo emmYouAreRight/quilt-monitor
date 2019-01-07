@@ -9,6 +9,8 @@ const xml2json = require('xml2json')
 
 const mqttClient = require('./lib/mqtt')
 const cache = require('./lib/cache')
+const quilt = require('./lib/quilt')
+const wx = require('./lib/wx')
 
 const HOSTNAME = '0.0.0.0' // ip或域名
 const PORT = 5050 // 端口
@@ -23,6 +25,9 @@ const QUILT_DATA = {
   temp: [],
   pm25: [],
   distance: []
+}
+const QUILT_INFO = {
+  curr: ''
 }
 
 const app = express()
@@ -86,7 +91,17 @@ app.post('/', function (req, res) {
     if (MsgType === 'event') {
       if (Event === 'CLICK') {
         if (EventKey === 'get_info') {
-          text = JSON.stringify(QUILT_DATA)
+          let { light, humi, pm25, distance, temp } = QUILT_DATA
+          light = quilt.getLight(light)
+          humi = quilt.getHumi(humi)
+          pm25 = quilt.getPm25(pm25)
+          distance = quilt.getDistance(distance)
+          temp = quilt.getTemp(temp)
+
+          let info = quilt.getInfo(QUILT_DATA)
+
+          text = `当前被子环境\n---------\n温度：${temp} °C\n湿度：${humi} %\n光照：${light} lux\nPM2.5：${pm25} μg/m3\n\n离杆距离：${distance} cm\n\nTips\n---------\n${info ||
+            '您的被子一切正常'}`
         }
       }
     } else {
@@ -124,6 +139,44 @@ app.get('/upload', function (req, res) {
   QUILT_DATA['humi'].length = CONFIG.QUILT_DATA_LENGTH
   QUILT_DATA['distance'].length = CONFIG.QUILT_DATA_LENGTH
   QUILT_DATA['pm25'].length = CONFIG.QUILT_DATA_LENGTH
+
+  // 检测数据
+  let info = quilt.getInfo(QUILT_DATA)
+  // info信息不为空，且info信息与上次不一致时推送消息，且info信息不是curr的子集
+  if (info !== '' && QUILT_INFO.curr.indexOf(info) === -1) {
+    console.log(`Event: 推送消息 ${info}`)
+    QUILT_INFO.curr = info
+    let callback = function (accessToken) {
+      let { light, humi, pm25, distance, temp } = QUILT_DATA
+      light = quilt.getLight(light)
+      humi = quilt.getHumi(humi)
+      pm25 = quilt.getPm25(pm25)
+      distance = quilt.getDistance(distance)
+      temp = quilt.getTemp(temp)
+      wx.sendTemplateMessageToAll(
+        {
+          light,
+          humi,
+          pm25,
+          distance,
+          temp,
+          info
+        },
+        accessToken,
+        function (data) {}
+      )
+    }
+    if (cache.isExpired('access_token')) {
+      wx.getAccessToken(CONFIG.appid, CONFIG.secret, function (data) {
+        cache.set('access_token', data['access_token'], data['expires_in'])
+        let accessToken = cache.get('access_token')
+        callback(accessToken)
+      })
+    } else {
+      let accessToken = cache.get('access_token')
+      callback(accessToken)
+    }
+  }
 })
 
 /**
@@ -139,23 +192,102 @@ app.get('/debug/getQuiltData', function (req, res) {
 app.get('/wx/getAccessToken', function (req, res) {
   if (cache.isExpired('access_token')) {
     // http 获取access token
-    https.get(
-      `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${
-        CONFIG.appid
-      }&secret=${CONFIG.secret}`,
-      response => {
-        let data = ''
-        response.setEncoding('utf8')
-        response.on('data', chunk => (data += chunk))
-        response.on('end', () => {
-          let obj = JSON.parse(data)
-          cache.set('access_token', obj['access_token'], obj['expires_in'])
-          res.send(obj['access_token'])
-        })
-      }
-    )
+    wx.getAccessToken(CONFIG.appid, CONFIG.secret, function (data) {
+      cache.set('access_token', data['access_token'], data['expires_in'])
+      res.send(data['access_token'])
+    })
   } else {
     res.send(cache.get('access_token'))
+  }
+})
+
+/**
+ * [Wexin:获取关注用户列表]
+ */
+app.get('/wx/getUserList', function (req, res) {
+  if (cache.isExpired('access_token')) {
+    wx.getAccessToken(CONFIG.appid, CONFIG.secret, function (data) {
+      cache.set('access_token', data['access_token'], data['expires_in'])
+      let accessToken = cache.get('access_token')
+      wx.getUserList(accessToken, function (data) {
+        res.send(data)
+      })
+    })
+  } else {
+    let accessToken = cache.get('access_token')
+    wx.getUserList(accessToken, function (data) {
+      res.send(data)
+    })
+  }
+})
+
+app.get('/wx/sendTemplateMessage', function (req, res) {
+  let callback = function (accessToken) {
+    let { light, humi, pm25, distance, temp } = QUILT_DATA
+    light = quilt.getLight(light)
+    humi = quilt.getHumi(humi)
+    pm25 = quilt.getPm25(pm25)
+    distance = quilt.getDistance(distance)
+    temp = quilt.getTemp(temp)
+    wx.sendTemplateMessage(
+      'oIoLUjqyFlBI8dk8vE9Bh0TRGs_Y',
+      {
+        light,
+        humi,
+        pm25,
+        distance,
+        temp,
+        info: 'test'
+      },
+      accessToken,
+      function (data) {
+        res.send(data)
+      }
+    )
+  }
+  if (cache.isExpired('access_token')) {
+    wx.getAccessToken(CONFIG.appid, CONFIG.secret, function (data) {
+      cache.set('access_token', data['access_token'], data['expires_in'])
+      let accessToken = cache.get('access_token')
+      callback(accessToken)
+    })
+  } else {
+    let accessToken = cache.get('access_token')
+    callback(accessToken)
+  }
+})
+
+app.get('/wx/sendTemplateMessageToAll', function (req, res) {
+  let callback = function (accessToken) {
+    let { light, humi, pm25, distance, temp } = QUILT_DATA
+    light = quilt.getLight(light)
+    humi = quilt.getHumi(humi)
+    pm25 = quilt.getPm25(pm25)
+    distance = quilt.getDistance(distance)
+    temp = quilt.getTemp(temp)
+    wx.sendTemplateMessageToAll(
+      {
+        light,
+        humi,
+        pm25,
+        distance,
+        temp,
+        info: Date()
+      },
+      accessToken,
+      function (data) {}
+    )
+    res.send('ok')
+  }
+  if (cache.isExpired('access_token')) {
+    wx.getAccessToken(CONFIG.appid, CONFIG.secret, function (data) {
+      cache.set('access_token', data['access_token'], data['expires_in'])
+      let accessToken = cache.get('access_token')
+      callback(accessToken)
+    })
+  } else {
+    let accessToken = cache.get('access_token')
+    callback(accessToken)
   }
 })
 
