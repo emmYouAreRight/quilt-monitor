@@ -32,6 +32,11 @@ const QUILT_INFO = {
 const QUILT_STATUS = {
   isOn: true
 }
+const QUILT_ADMIN = [
+  'oIoLUjqyFlBI8dk8vE9Bh0TRGs_Y',
+  'oIoLUjqDCkbQ7uJFMium6lqsYIsE'
+  // 'oIoLUjtGE20xJZgmbyntXDPv62TI'
+]
 
 const app = express()
 
@@ -117,26 +122,35 @@ app.post('/', function (req, res) {
             text = '被子检测尚未开启，暂无数据'
           }
         } else if (EventKey === 'turn_on') {
-          QUILT_STATUS.isOn = true
-          console.log(`Event: 开闭消息 开启被子检测`)
-          text = '被子监测已开启'
-        } else if (EventKey === 'turn_off') {
-          QUILT_STATUS.isOn = false
-          text = '被子检测已关闭'
-          console.log(`Event: 开闭消息 关闭被子检测`)
-          for (let key in QUILT_DATA) {
-            QUILT_DATA[key] = []
+          if (QUILT_ADMIN.indexOf(FromUserName) !== -1) {
+            QUILT_STATUS.isOn = true
+            console.log(`Event: 开闭消息 开启被子检测`)
+            text = '被子监测已开启'
+          } else {
+            text = '暂无权限'
           }
-          console.log(`Event: 开闭消息 QUILT_DATA已重置`)
-          const content = JSON.stringify({
-            LIGHT: 0,
-            TEMP: 0,
-            HUMI: 0,
-            DISTANCE: 0,
-            PM25: 0
-          })
-          console.log(`Event: 开闭消息 推送MQTT消息`)
-          mqttClient.pub(content)
+        } else if (EventKey === 'turn_off') {
+          if (QUILT_ADMIN.indexOf(FromUserName) !== -1) {
+            QUILT_STATUS.isOn = false
+            text = '被子检测已关闭'
+            console.log(`Event: 开闭消息 关闭被子检测`)
+            for (let key in QUILT_DATA) {
+              QUILT_DATA[key] = []
+            }
+            QUILT_INFO.curr = ''
+            console.log(`Event: 开闭消息 QUILT_DATA已重置`)
+            const content = JSON.stringify({
+              LIGHT: 0,
+              TEMP: 0,
+              HUMI: 0,
+              DISTANCE: 0,
+              PM25: 0
+            })
+            console.log(`Event: 开闭消息 推送MQTT消息`)
+            mqttClient.pub(content)
+          } else {
+            text = '暂无权限'
+          }
         }
       }
     } else {
