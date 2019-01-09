@@ -29,6 +29,9 @@ const QUILT_DATA = {
 const QUILT_INFO = {
   curr: ''
 }
+const QUILT_STATUS = {
+  isOn: true
+}
 
 const app = express()
 
@@ -100,8 +103,40 @@ app.post('/', function (req, res) {
 
           let info = quilt.getInfo(QUILT_DATA)
 
-          text = `当前被子环境\n---------\n温度：${temp} °C\n湿度：${humi} %\n光照：${light} lux\nPM2.5：${pm25} μg/m3\n\n离杆距离：${distance} cm\n\nTips\n---------\n${info ||
-            '您的被子一切正常'}`
+          if (QUILT_STATUS.isOn) {
+            let hasData = false
+            for (let key in QUILT_DATA) {
+              hasData = hasData || QUILT_DATA[key].length > 0
+            }
+
+            text = hasData
+              ? `当前被子环境\n---------\n温度：${temp} °C\n湿度：${humi} %\n光照：${light} lux\nPM2.5：${pm25} μg/m3\n\n离杆距离：${distance} cm\n\nTips\n---------\n${info ||
+                  '您的被子一切正常'}`
+              : '数据正在采集中...'
+          } else {
+            text = '被子检测尚未开启，暂无数据'
+          }
+        } else if (EventKey === 'turn_on') {
+          QUILT_STATUS.isOn = true
+          console.log(`Event: 开闭消息 开启被子检测`)
+          text = '被子监测已开启'
+        } else if (EventKey === 'turn_off') {
+          QUILT_STATUS.isOn = false
+          text = '被子检测已关闭'
+          console.log(`Event: 开闭消息 关闭被子检测`)
+          for (let key in QUILT_DATA) {
+            QUILT_DATA[key] = []
+          }
+          console.log(`Event: 开闭消息 QUILT_DATA已重置`)
+          const content = JSON.stringify({
+            LIGHT: 0,
+            TEMP: 0,
+            HUMI: 0,
+            DISTANCE: 0,
+            PM25: 0
+          })
+          console.log(`Event: 开闭消息 推送MQTT消息`)
+          mqttClient.pub(content)
         }
       }
     } else {
@@ -124,6 +159,9 @@ app.get('/upload', function (req, res) {
     DISTANCE: Number(queryObj.RangeInCentimeters),
     PM25: Number(queryObj.pm25)
   })
+  if (!QUILT_STATUS.isOn) {
+    return res.send('closed')
+  }
   res.send(content)
   mqttClient.pub(content)
 
@@ -279,6 +317,55 @@ app.get('/wx/sendTemplateMessageToAll', function (req, res) {
     )
     res.send('ok')
   }
+  if (cache.isExpired('access_token')) {
+    wx.getAccessToken(CONFIG.appid, CONFIG.secret, function (data) {
+      cache.set('access_token', data['access_token'], data['expires_in'])
+      let accessToken = cache.get('access_token')
+      callback(accessToken)
+    })
+  } else {
+    let accessToken = cache.get('access_token')
+    callback(accessToken)
+  }
+})
+
+app.get('/wx/updateMenu', function (req, res) {
+  let callback = function (accessToken) {
+    wx.updateMenu(data, accessToken, function (data) {
+      res.send(data)
+    })
+  }
+
+  let data = {
+    button: [
+      {
+        type: 'view',
+        name: 'IoT Home',
+        url: 'http://ol.tinylink.cn/'
+      },
+      {
+        name: '操作',
+        sub_button: [
+          {
+            type: 'click',
+            name: '获取信息',
+            key: 'get_info'
+          },
+          {
+            type: 'click',
+            name: '开启',
+            key: 'turn_on'
+          },
+          {
+            type: 'click',
+            name: '关闭',
+            key: 'turn_off'
+          }
+        ]
+      }
+    ]
+  }
+
   if (cache.isExpired('access_token')) {
     wx.getAccessToken(CONFIG.appid, CONFIG.secret, function (data) {
       cache.set('access_token', data['access_token'], data['expires_in'])
