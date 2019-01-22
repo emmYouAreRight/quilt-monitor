@@ -392,6 +392,74 @@ app.get('/wx/updateMenu', function (req, res) {
   }
 })
 
+app.get('/iothome/getInfo', function (req, res) {
+  let { light, humi, pm25, distance, temp } = QUILT_DATA
+  light = quilt.getLight(light)
+  humi = quilt.getHumi(humi)
+  pm25 = quilt.getPm25(pm25)
+  distance = quilt.getDistance(distance)
+  temp = quilt.getTemp(temp)
+
+  let info = quilt.getInfo(QUILT_DATA)
+
+  let hasData = false
+  for (let key in QUILT_DATA) {
+    hasData = hasData || QUILT_DATA[key].length > 0
+  }
+  res.send(
+    JSON.stringify({
+      light,
+      humi,
+      pm25,
+      distance,
+      temp,
+      info: QUILT_STATUS.isOn
+        ? hasData
+          ? info || '您的被子一切正常'
+          : '数据正在采集中...'
+        : '被子检测尚未开启，暂无数据'
+    })
+  )
+})
+
+app.get('/iothome/toggle', function (req, res) {
+  const queryObj = req.query
+  const command = queryObj.command
+
+  switch (command) {
+    case 'open':
+      QUILT_STATUS.isOn = true
+      console.log(`Web Event: 开闭消息 开启被子检测`)
+      res.send('开启被子检测')
+      break
+    case 'close':
+      QUILT_STATUS.isOn = false
+      res.send('被子检测已关闭')
+      console.log(`Web Event: 开闭消息 关闭被子检测`)
+      for (let key in QUILT_DATA) {
+        QUILT_DATA[key] = []
+      }
+      QUILT_INFO.curr = ''
+      console.log(`Web Event: 开闭消息 QUILT_DATA已重置`)
+      const content = JSON.stringify({
+        LIGHT: 0,
+        TEMP: 0,
+        HUMI: 0,
+        DISTANCE: 0,
+        PM25: 0
+      })
+      console.log(`Web Event: 开闭消息 推送MQTT消息`)
+      mqttClient.pub(content)
+      break
+    default:
+  }
+})
+
+app.get('/iothome/push', function (req, res) {
+  let info = quilt.getInfo(QUILT_DATA)
+  res.send(info || '您的被子一切正常')
+})
+
 app.listen(PORT, HOSTNAME, function () {
   console.log(`server started on http://${HOSTNAME}:${PORT}`)
 })
