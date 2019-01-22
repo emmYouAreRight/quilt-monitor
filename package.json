@@ -3,12 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-  "repository": {
-    "type": "git",
-    "url": "https://git.sinacloud.com/quilt"
-  },
   "author": "daixinye",
-  "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
     "mqtt": "^2.18.8",
