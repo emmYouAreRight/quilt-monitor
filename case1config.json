@@ -1,0 +1,15 @@
+{
+  "grant_type": "client_credential",
+  "SERVER_NAME": "mqtt://tinylink.cn",
+  "CLIENT_NAME": "6564aa1028e2652585b867c38a44bcfdabd77f68",
+  "PORT": 1883,
+  "SUB_TOPIC": "6564aa1028e2652585b867c38a44bcfdabd77f68/service",
+  "PUB_TOPIC": "6564aa1028e2652585b867c38a44bcfdabd77f68/data",
+  "PUB_EVENT_TOPIC": "6564aa1028e2652585b867c38a44bcfdabd77f68/data",
+  "USERNAME": "qhh666888",
+  "PASSWORD": "qhh666888",
+  "CLIENT_NAME2": "4f0fe79dfd5293b3efe18e625583d0efef748d96",
+  "SUB_TOPIC2": "4f0fe79dfd5293b3efe18e625583d0efef748d96/service",
+  "PUB_TOPIC2": "4f0fe79dfd5293b3efe18e625583d0efef748d96/data",
+  "PUB_EVENT_TOPIC2": "4f0fe79dfd5293b3efe18e625583d0efef748d96/data"
+}
