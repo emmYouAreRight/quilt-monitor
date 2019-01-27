@@ -22,7 +22,7 @@
     "eslint-plugin-standard": "^4.0.0"
   },
   "scripts": {
-    "start": "pm2 start server.js --name \"quilt\" --no-daemon",
+    "start": "pm2 start ./server/server.js --name \"quilt\" --no-daemon",
     "stop": "pm2 stop quilt & pm2 delete quilt"
   }
 }

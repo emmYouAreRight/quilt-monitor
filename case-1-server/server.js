@@ -1,5 +1,5 @@
 const express = require('express')
-const case1MqttClient = require('./lib/case1mqtt')
+const case1MqttClient = require('./case1mqtt')
 
 const app = express()
 
