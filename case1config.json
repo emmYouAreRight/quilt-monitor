@@ -11,5 +11,5 @@
   "CLIENT_NAME2": "4f0fe79dfd5293b3efe18e625583d0efef748d96",
   "SUB_TOPIC2": "4f0fe79dfd5293b3efe18e625583d0efef748d96/service",
   "PUB_TOPIC2": "4f0fe79dfd5293b3efe18e625583d0efef748d96/data",
-  "PUB_EVENT_TOPIC2": "4f0fe79dfd5293b3efe18e625583d0efef748d96/data"
+  "PUB_EVENT_TOPIC2": "4f0fe79dfd5293b3efe18e625583d0efef748d96/event"
 }
