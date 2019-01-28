@@ -12,8 +12,8 @@ const cache = require('./lib/cache')
 const quilt = require('./lib/quilt')
 const wx = require('./lib/wx')
 
-const HOSTNAME = '0.0.0.0' // ip或域名
-const PORT = 5050 // 端口
+const HOSTNAME = '127.0.0.1' // ip或域名
+const PORT = 80 // 端口
 
 /**
  * [设置验证微信接口配置参数]
@@ -44,7 +44,8 @@ const app = express()
  * [开启跨域便于接口访问]
  */
 app.all('*', function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*') // 访问控制允许来源：所有
+  res.header('Access-Control-Allow-Origin', req.headers.origin) // 访问控制允许来源：所有
+  res.header("Access-Control-Allow-Credentials", true)
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept'
