@@ -1,0 +1,699 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--    Page header
+        Description: The header of each view page.
+        Date: 2017-3-22 16:40
+        Author: ZYX
+-->
+
+<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--link rel="icon" href="../../favicon.ico"-->
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/justified-nav.css" rel="stylesheet">
+    <title></title>
+    <!--link rel="stylesheet" href="style.css" type="text/css" media="screen" /-->
+    <!-- meta http-equiv="content-type" content="text/html; charset=utf-8" /-->
+    <script src="js/ie-emulation-modes-warning.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+    <script language="javascript" type="text/javascript" src="js/jquery.min.js"></script>
+    <!--script src="js/bootstrap.min.js"></script-->
+    <script src="js/bootstrap.js"></script>
+    <script src="js/bootstrap-dropdown.js"></script>
+
+
+<style type="text/css">
+
+    body{
+        font-family: 'Electrolize', Arial, sans-serif;
+        font-weight: 400;
+        font-size: 15px;
+        color: #fff;
+        background: url("https://llwork-1257979103.cos.ap-chengdu.myqcloud.com/olfile/bg_sunny.png");
+    }
+@media (min-width: 480px) {
+    body{
+        background: url("https://llwork-1257979103.cos.ap-chengdu.myqcloud.com/olfile/bg_sunny.png");
+        background-repeat: repeat;
+    }
+}
+@media (max-width: 480px) {
+    body{
+        background: url("https://llwork-1257979103.cos.ap-chengdu.myqcloud.com/olfile/bg_sunny.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+}
+
+	#dataChartModule{
+        display:none;
+    }
+    #dataTextModule{
+        display:none;
+    }
+    hr{
+            clear: both;
+    }
+
+.fheader{
+    float: right;
+    margin-right: 10px;
+}
+
+.nav {
+    border: 0;
+}
+
+ul.notes {
+    margin-top: 150px;
+}
+
+ul.notes li,
+ul.tag-list li {
+    list-style: none;
+}
+
+ul.notes li h4 {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+ul.notes li div {
+    text-decoration: none;
+    color: #000;
+    background: #ffc;
+    display: block;
+    height: 140px;
+    width: 140px;
+    padding: 1em;
+    position: relative;
+}
+
+ul.notes li div small {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 10px;
+}
+
+ul.notes li div a {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    color: inherit;
+}
+
+ul.notes li {
+    margin: 10px 40px 50px 0px;
+    float: left;
+}
+
+ul.notes li div p {
+    font-size: 12px;
+}
+
+ul.notes li div ul li {
+    margin: 0px;
+    padding: 0px;
+}
+
+ul.notes li div {
+    text-decoration: none;
+    color: #000;
+    background: #ffc;
+    display: block;
+    height: 140px;
+    width: 140px;
+    padding: 1em;
+    /* Firefox */
+    /* Safari+Chrome */
+    /* Opera */
+    box-shadow: 5px 5px 2px rgba(33, 33, 33, 0.7);
+}
+
+ul.notes li div {
+    -webkit-transform: rotate(-6deg);
+    -o-transform: rotate(-6deg);
+    -moz-transform: rotate(-6deg);
+}
+
+ul.notes li:nth-child(even) div {
+    -o-transform: rotate(4deg);
+    -webkit-transform: rotate(4deg);
+    -moz-transform: rotate(4deg);
+    position: relative;
+    top: 5px;
+}
+
+ul.notes li:nth-child(3n) div {
+    -o-transform: rotate(-3deg);
+    -webkit-transform: rotate(-3deg);
+    -moz-transform: rotate(-3deg);
+    position: relative;
+    top: -5px;
+}
+
+ul.notes li:nth-child(5n) div {
+    -o-transform: rotate(5deg);
+    -webkit-transform: rotate(5deg);
+    -moz-transform: rotate(5deg);
+    position: relative;
+    top: -10px;
+}
+
+ul.notes li div:hover,
+ul.notes li div:focus {
+    -webkit-transform: scale(1.1);
+    -moz-transform: scale(1.1);
+    -o-transform: scale(1.1);
+    position: relative;
+    z-index: 5;
+}
+
+ul.notes li div {
+    text-decoration: none;
+    color: #000;
+    background: #ffc;
+    display: block;
+    height: 210px;
+    width: 210px;
+    padding: 1em;
+    box-shadow: 5px 5px 7px rgba(33, 33, 33, 0.7);
+    -webkit-transition: -webkit-transform 0.15s linear;
+}
+
+#detailInfo {
+    margin-top: 80px;
+    height: 70%;
+}
+.highcharts-container {
+    width:100% !important;
+    height:100% !important;
+}
+
+/*主要用来修改button、text及其他元素样式*/    
+</style>
+
+<script language="javascript" type="text/javascript" src="js/jquery.min.js"></script>
+<script language="javascript" type="text/javascript" src="js/highcharts.js"></script>
+<script language="javascript" type="text/javascript" src="js/exporting.js"></script>
+<script src="js/RGraph.common.core.js" ></script>
+<script src="js/RGraph.common.effects.js" ></script>
+<script src="js/RGraph.common.dynamic.js" ></script>
+<script src="js/RGraph.gauge.js" ></script>
+<script src="js/excanvas.js"></script>
+<script type="text/javascript">
+
+   	var widthBase, scale, widthCurrent,gDataDate=0, gDataDateLast=0, res = 0;
+    var projectName = "";
+    widthBase = document.body.clientWidth;
+
+    /*************No modified area***********************/
+	var drawDataChart = new Array();
+    var chartArray = new Array();
+    var dataValue = new Array();
+
+	// chart class
+	function chartClass(itemNum, chartName,title){
+	    this.itemNum = itemNum;
+	    this.chartName = chartName;
+        this.title = title;
+	    this.updateDataHighChart = 0;   // 0: dont update; 1: update
+	    this.itemName = new Array();
+	    this.dataValue = new Array();
+	    this.interfaceID = new Array();
+        this.interfaceName = new Array();
+        this.instanceName = new Array();
+	}
+
+	// chart list class
+	function chartList(chartNum){
+	    this.chartNum = chartNum;
+	    this.chartArray = new Array();
+
+	    for (var i=0; i<this.chartNum; i++)
+	    {
+	        drawDataChart[i] = 0;
+	    }
+	}
+
+	// Text class
+	function textClass(textID){
+	    this.textID = textID;
+	    this.textName = "text" + String(this.textID);
+	    this.interfaceID = 0;
+        this.interfaceName = "";
+        this.instanceName = "";
+	    this.textValue = "";
+	}
+
+	// text list class
+	function textList(textNum){
+	    this.textNum = textNum;
+	    this.textArray = new Array();
+	}
+
+    // Button class
+    function buttonClass(buttonID){
+        this.buttID = buttonID;
+        this.buttName = "button" + String(this.buttID);
+        this.showText = ""
+        this.onClickEvent = "onClick" + String(this.burrID);
+        this.services = ""
+    }
+        // Button list class
+    function buttonList(buttonNum){
+        this.buttonNum = buttonNum;
+        this.buttonArray = new Array();
+    }
+
+	// Chart and CahrtList define
+	var myChartList;
+	// Text and TextList define
+	var myTextList;
+    // Button and ButtonList define
+    var myButtonList;
+    // interfaces
+    var interfaces;
+
+	// Fetch get parameter
+	function getQueryString(name) { 
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+		var r = window.location.search.substr(1).match(reg); 
+		if (r != null)
+			return decodeURIComponent(r[2]);
+		return null; 
+	}
+
+    // button OnClick function
+    function buttOnClick(element)
+    {
+        for (var button_index = 0; button_index < myButtonList.buttonNum; button_index++)
+        {
+            // get the clicked button
+            if (element.id == myButtonList.buttonArray[button_index].buttName)
+            {
+                //element.value = element.value + "1";
+                var services = myButtonList.buttonArray[button_index].services;            
+                $.get("<?php echo BASE_URL;?>/onelink/project_module/project_control.php", {type:'publishService',appName:projectName, serviceList:services},function(data){
+                    if (data.status == 200)
+                    {
+                        //window.alert(data.serviceList);
+                    }
+                }, "json");
+
+            }
+        }
+    }
+
+    /**************************************/
+    	
+    function drawBrokenLine(myChart,title,unit){
+        // define series
+        series = new Array();
+        for (var count=0; count<myChart.itemNum; count++)
+        {
+            var itname;
+            var yvalue;
+            var suffix;
+            switch(myChart.itemName[count])
+            {
+                case 'AQ.LIGHT':
+                    itname = '光照强度';
+                    yvalue = 0;
+                    suffix = ' Lux';
+                    break;
+                case 'AQ.TEMP':
+                    itname = '温度';
+                    yvalue = 1;
+                    suffix = ' °C';
+                    break;
+                case 'AQ.HUMI':
+                    itname = '湿度';
+                    yvalue = 1;
+                    suffix = ' %';
+                    break;
+                case 'AQ.PM25':
+                    itname = 'PM2.5';
+                    yvalue = 1;
+                    suffix = ' ';
+                    break;
+                case 'AQ.DISTANCE':
+                    itname = '离杆距离';
+                    yvalue = 0;
+                    suffix = ' cm';
+                    break;
+            }
+            series[count] = {
+                name: itname, 
+                type: 'spline',
+                data: (function() {
+                    // generate an array of random data
+                    var data = [];
+                    var time = new Date(Date.parse(gDataDate.replace(/-/g,"/"))).getTime()-1000;
+                    var i;
+                    for (i = -19; i <= 0; i++) {
+                        data.push({
+                            x: time + i * 1000,
+                            y: 0
+                        });
+                    }
+                    return data;
+                })(),
+                yAxis: yvalue,
+                tooltip: {
+			        valueSuffix: suffix
+		        }
+            };
+        }
+
+        $(document).ready(function() {
+            Highcharts.setOptions({
+                global: {
+                    useUTC: false
+                }
+            });
+            var charts;
+            var titlename;
+            var yAxisValue;
+            if(myChart.title == "ENVIRONMENT_VARIATION_CHART") {
+                titlename = '环境变化趋势图';
+                yAxisValue = [
+                { 
+                    title: {
+                        text: '光照度',
+                        
+                    },
+                    labels: {
+                        format: '{value} Lux',
+                        
+                    },
+                    opposite: true
+                },
+                { // Primary yAxis
+                    labels: {
+                        format: '{value}',
+                        
+                    },
+                    title: {
+                        text: '',
+                        
+                    }
+                }, 
+            ]
+            }
+            else if (myChart.title == "DISTANCE_VARIATION_CHART") {
+                titlename = '距离变化趋势图';
+                yAxisValue = {
+                    title: {
+                        text: '距离',
+                        
+                    },
+                    labels: {
+                        format: '{value} cm',
+
+                    },
+                }
+            }
+
+            charts = new Highcharts.Chart({
+                chart: {
+                    renderTo: myChart.chartName,
+                    type: 'line',
+                    events: {
+                        load: function() {
+                            var seriesDataArray = new Array();
+                            for (var i=0; i<myChart.itemNum; i++)
+                            { 
+                                seriesDataArray[i] = this.series[i];
+                            }
+                            setInterval(function() {
+                                var x = new Date(Date.parse(gDataDate.replace(/-/g,"/"))).getTime();
+                                var y;
+                                if(myChart.updateDataHighChart == 1){
+                                    myChart.updateDataHighChart = 0;
+                                    for(var i = 0; i<myChart.itemNum; i++)
+                                    {
+                                        y = parseFloat(myChart.dataValue[i]);
+                                        seriesDataArray[i].addPoint([x, y], true, true);
+                                    }
+                                }
+                            }, 1000);   //  set setInterval
+                            
+                        }// load function
+                    },   // events 
+                },
+                title: {
+                    text: titlename
+                },
+                xAxis: {
+                    type: 'datetime',
+                    tickPixelInterval: 150
+                },
+                yAxis: yAxisValue,
+                
+                tooltip: {  // 鼠标放在图形上的提示信息
+                    shared: true
+                },
+                legend: {
+                	align: "right", //程度标的目标地位
+    				verticalAlign: "top", //垂直标的目标地位
+    				x: 0,//间隔x轴的间隔
+    				y: 100 //间隔Y轴的间隔
+                    //enabled: false
+                },
+                exporting: {
+                    enabled: false
+                },
+                series,
+                
+            }); //  charts = new Highcharts.Chart
+            charts.reflow();
+        }); // $(document).ready(function()
+    }
+    
+	// Change scale of the UI
+	function changeScreen(){
+        widthCurrent = $('.panel').width();
+        scale = widthCurrent/widthBase;
+        
+        if(myChartList){
+    	    for(var count=0; count < myChartList.chartNum; count++)
+    	    {
+    	        var chartName = "dataChart" + String(count)
+    	        if(document.getElementById(chartName) != null){
+    	            document.getElementById(chartName).style.width = '100%';
+    	           // document.getElementById(chartName).style.height = '100%';
+    	        }
+    	 
+    	    }
+        }
+	}
+
+    //获得所有interface最新的数据
+	function getAppRawData(dstr){
+	     if (widthBase <= 700 && $('.panel').width()>0 ){
+		 	changeScreen();
+	     }
+		if(dstr){
+			$.get("<?php echo BASE_URL;?>/onelink/project_module/project_control.php",{type:'rawData',dataSource:dstr},function(data){
+                /*此get请求将项目中interface id（包括项目中定义的TL_Data和TL_Event)的集合作为参数，以json形式获得每个interface最新的数据和时间信息
+                  Data类型的数据存储在data.data中，Event类型的数据存储在data.event中
+                  通过data.data[interfaceID].value或data.event[interfaceID].value获取数值
+                  通过data.data[interfaceID].time或data.event[interfaceID].time获取时间
+                  data.currentDate;存储当前时间
+                  可通过time和currentDate判断数据是否是重复数据，或检测设备连接状态*/         
+				var dataList = data.data;     
+                var eventList = data.event;
+
+				if(dataList != ""){
+					if (myChartList){
+                        /*可以取消for循环，为每一个chart单独订制新的图表类型*/
+    					   for (var chart_index=0; chart_index < myChartList.chartNum; chart_index++)
+                        {
+                            for (var item_index=0; item_index < myChartList.chartArray[chart_index].itemNum; item_index++)
+                            {
+                                    var interfaceID = myChartList.chartArray[chart_index].interfaceID[item_index];
+                                    if(interfaceID in dataList){
+                                        myChartList.chartArray[chart_index].dataValue[item_index] = data.data[interfaceID].value;  
+                                    }   
+                            }
+                            gDataDate = data.currentDate;
+                            myChartList.chartArray[chart_index].updateDataHighChart = 1;
+                            if(drawDataChart[chart_index] == 0){
+                                $('#dataChartModule').show();
+                                drawBrokenLine(myChartList.chartArray[chart_index], "<b>"+myChartList.chartArray[chart_index].title+"</b>", "unit");
+                                drawDataChart[chart_index] = 1;
+                            }
+
+                        }
+                    }
+				}
+                if(dataList != ""||eventList!=""){
+                    if(myTextList){
+                        for (var text_index =0; text_index < myTextList.textNum; text_index++)
+                        {
+                            var interfaceID = myTextList.textArray[text_index].interfaceID;
+                            if (interfaceID in eventList)
+                            {
+                                myTextList.textArray[text_index].textValue = eventList[interfaceID].value;
+                            }else if(interfaceID in dataList){
+                                myTextList.textArray[text_index].textValue = dataList[interfaceID].value;
+                            }
+                            document.getElementById(myTextList.textArray[text_index].textName).textContent = myTextList.textArray[text_index].textValue;
+                            $('#dataTextModule').show();
+                        }
+                    }
+                }
+			},"json");
+		}	
+    }
+    var quiltTimer;
+
+    function getQuiltInfo() {
+        console.log('==============getQuiltInfo============');
+        $.ajax({
+            type: "GET",
+            url: "http://wx.web.daixinye.com/iothome/getInfo",
+            dataType: "json",
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
+            success: function(data){
+                console.log(data);
+                var cdate = new Date();
+                $('#infoTime').html(cdate.toLocaleString());
+                console.log(cdate);
+                if(data.light != "NaN") {
+                    $('#light').html(data.light);
+                }
+                if(data.humi != "NaN") {
+                    $('#humi').html(data.humi);
+                }
+                if(data.temp != "NaN") {
+                    $('#temp').html(data.temp);
+                }
+                if(data.distance != "NaN") {
+                    $('#distance').html(data.distance);
+                }
+                if(data.info != null) {
+                    $('#qInfo').html(data.info);
+                }
+            }
+        });
+    }
+
+	if(getQueryString("appName") != null){
+		projectName = getQueryString("project");
+        $.ajaxSetup({crossDomain: true, xhrFields: {withCredentials: true}});
+		window.onload=function(){
+			setInterval("getAppRawData(interfaces)",1000); 	//数据更新时间，默认1s
+		}
+	}
+
+    $(function(){
+    $('#startInfo').click(function(){
+        console.log('=================start===========');
+        $.ajax({
+            type: "GET",
+            url: "http://wx.web.daixinye.com/iothome/toggle",
+            data: {
+                command: 'open', 
+            },
+            dataType: "text",
+            success: function(data){
+                        console.log('============success=========');
+                        console.log(data);
+                        $('#qInfo').html(data);
+                        quiltTimer = setInterval("getQuiltInfo()",3000);
+                    },
+            });
+        });
+
+        $('#closeInfo').click(function(){
+        console.log('=================close===========');
+        $.ajax({
+            type: "GET",
+            url: "http://wx.web.daixinye.com/iothome/toggle",
+            data: {
+                command: 'close', 
+            },
+            dataType: "text",
+            success: function(data){
+                        console.log(data);
+                        $('#qInfo').html(data);
+                        clearInterval(quiltTimer); 
+                }
+        });
+        });
+    });
+    
+</script>
+
+<div class="fheader">
+    <ul class="nav nav-tabs" id="myTab">
+          <li><a class="btn btn-default" href="#quiltInfo" data-toggle="tab">被子信息</a></li>
+          <li><a class="btn btn-default" href="#detailInfo" data-toggle="tab">详细信息</a></li>
+          <li><a class="btn btn-default" id="startInfo">开启</a></li>
+          <li><a class="btn btn-default" id="closeInfo">关闭</a></li>                        
+    </ul>
+  </div>
+
+<div class="tab-content">
+    <div id="quiltInfo" class="tab-pane active">
+    <div>
+        <ul class="notes">
+            <li>
+                <div id="quilt" class="col-xs-6 col-lg-6 col-xs-push-3 col-lg-push-3">
+                    <small id="infoTime"></small>
+                    <h4 id="qInfo">当前被子环境</h4>
+                    <ul>
+                        <li id="temp"></li>
+                        <li id="humi"></li>
+                        <li id="light"></li>
+                        <li id="pm25"></li>
+                        <li id="distance"></li>
+                    </ul>
+                </div>
+            </li>    
+        </ul>
+    </div>
+    </div>
+    <div id="detailInfo" class="tab-pane">
+        <div class="col-sm-8">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">详细信息</h3>
+                </div>
+                <div class="panel-body">
+                    <div id="dataChartModule"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+  
+<div id="dataTextModule"></div>
+<div id="buttonModule"></div>
+
+       
+    
+</body>
+</html>
