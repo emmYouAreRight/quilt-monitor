@@ -580,16 +580,19 @@ ul.notes li div {
                 $('#infoTime').html(cdate.toLocaleString());
                 console.log(cdate);
                 if(data.light != "NaN") {
-                    $('#light').html(data.light);
+                    $('#light').html("光照：" + data.light + "lux");
                 }
                 if(data.humi != "NaN") {
-                    $('#humi').html(data.humi);
+                    $('#humi').html("湿度：" + data.humi + "%");
                 }
                 if(data.temp != "NaN") {
-                    $('#temp').html(data.temp);
+                    $('#temp').html("温度：" + data.temp + "℃");
                 }
                 if(data.distance != "NaN") {
-                    $('#distance').html(data.distance);
+                    $('#distance').html("离杆距离：" + data.distance + "cm");
+                }
+                if(data.pm25 != "NaN") {
+                    $('#pm25').html("pm2.5：" + data.distance + "μg/m3");
                 }
                 if(data.info != null) {
                     $('#qInfo').html(data.info);
